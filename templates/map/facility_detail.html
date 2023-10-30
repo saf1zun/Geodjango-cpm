@@ -1,0 +1,18 @@
+{% extends "home/base.html" %}
+{% block content %}
+    <h1>Health Facility Details</h1>
+    <p><strong>Name:</strong> {{ facility.facility_n }}</p>
+    <p><strong>Country:</strong> {{ facility.country }}</p>
+    <p><strong>Admin1:</strong> {{ facility.admin1 }}</p>
+    <p><strong>Facility Type:</strong> {{ facility.facility_t }}</p>
+    <p><strong>Ownership:</strong> {{ facility.ownership }}</p>
+    <p><strong>Latitude:</strong> {{ facility.lat }}</p>
+    <p><strong>Longitude:</strong> {{ facility.long }}</p>
+
+    <!-- You can add more details here as needed -->
+
+    <a href="{% url 'search_results' %}">Back to Search</a>
+
+    <!-- Add a "Show on Map" link -->
+    <a href="{% url 'map_results' %}?query={{ facility.facility_n }}">Show on Map</a>
+    {% endblock  %}

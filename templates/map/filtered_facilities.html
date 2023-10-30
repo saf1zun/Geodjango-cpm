@@ -1,0 +1,34 @@
+{% extends "home/base.html" %}
+    <h1>Filtered Health Facilities</h1>
+
+    <form method="GET" action="{% url 'filter_facilities' %}">
+        <label for="ownership">Ownership:</label>
+        <select id="ownership" name="ownership">
+            <option value="">Select Ownership</option>
+            <option value="Public">Public</option>
+            <option value="Private">Private</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="region">Region:</label>
+        <select id="region" name="region">
+            <option value="">Select Region</option>
+            <option value="Region 1">Region 1</option>
+            <option value="Region 2">Region 2</option>
+            <option value="Region 3">Region 3</option>
+            <!-- Add more region options as needed -->
+        </select>
+
+        <button type="submit">Apply Filters</button>
+    </form>
+
+    {% if facilities %}
+        <h2>Filtered Facilities</h2>
+        <ul>
+            {% for facility in facilities %}
+                <li><a href="{% url 'facility_detail' facility.pk %}">{{ facility.facility_n }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No facilities match the selected filters.</p>
+    {% endif}

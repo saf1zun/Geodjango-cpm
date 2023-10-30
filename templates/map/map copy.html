@@ -1,0 +1,74 @@
+{% load static %}
+{% load leaflet_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}Group 5{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+  {% leaflet_js %}
+  {% leaflet_css %}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    .leaflet-container {
+      width: 100%;
+      height: 100%;
+    }
+    
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script>
+    var dataurl = '{% url "home" %}';
+    window.addEventListener("map:init", function (event) {
+      var map = event.detail.map;
+      fetch(dataurl)
+        .then(function (resp) {
+          return resp.json();
+        })
+        .then(function (data) {
+          L.geoJson(data, {
+            onEachFeature: function (feature, layer) {
+              var props = feature.properties;
+              var content = `<img width="300" src="${props.picture_url}"/><h3>${props.title}</h3><p>${props.description}</p>`;
+              layer.bindPopup(content);
+            }
+          }).addTo(map);
+        });
+    });
+  </script>
+</head>
+<body>
+  {% include 'map/nav.html' %}
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Health Facilities in Ethiopia</h1>
+        <p class="lead text-danger"> The location points are fetched from the database</p>
+        {{ my_map|safe }}
+        <ul class="list-unstyled">
+          <li>Developed by Group 5</li>
+          <li>Mhammed Nur</li>
+          <li>Lamessa Tedesse</li>
+          <li>Dinkayehu Tadele</li>
+          <li>Ahmed Ayenew</li>          
+          <li>Dejene Lemessa</li>
+          <li>Gusha Belako</li>
+          <li>Contact: +251945952323</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the search form from search.html -->
+  
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+  crossorigin="anonymous">
+  </script>
+  <script src="{% static 'jquery/jquery.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

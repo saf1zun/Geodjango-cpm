@@ -1,0 +1,60 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% load leaflet_tags %}
+
+{% block content %}
+  {% leaflet_js %}
+  {% leaflet_css %}
+  <style>
+    .leaflet-container {
+      width: 100%;
+      height: 100%;
+    }
+    
+  </style>
+  <script>
+    var dataurl = '{% url "home" %}';
+    window.addEventListener("map:init", function (event) {
+      var map = event.detail.map;
+      fetch(dataurl)
+        .then(function (resp) {
+          return resp.json();
+        })
+        .then(function (data) {
+          L.geoJson(data, {
+            onEachFeature: function (feature, layer) {
+              var props = feature.properties;
+              var content = `<img width="300" src="${props.picture_url}"/><h3>${props.title}</h3><p>${props.description}</p>`;
+              layer.bindPopup(content);
+            }
+          }).addTo(map);
+        });
+    });
+  </script>
+
+  
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Health Facilities in Ethiopia</h1>
+        <p class="lead text-danger"> The location points are fetched from the database</p>
+        {{ my_map|safe }}
+        <ul class="list-unstyled">
+          <li>Developed by Group 5</li>
+          <li>Mhammed Nur</li>
+          <li>Lamessa Tedesse</li>
+          <li>Dinkayehu Tadele</li>
+          <li>Ahmed Ayenew</li>          
+          <li>Dejene Lemessa</li>
+          <li>Gusha Belako</li>
+          <li>Contact: +251945952323</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the search form from search.html -->
+  
+
+  {% endblock  %}

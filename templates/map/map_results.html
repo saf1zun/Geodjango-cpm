@@ -1,0 +1,20 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% block content %}
+
+    <h1>Search Results on Map</h1>
+
+  
+
+  
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    {{ map_html|safe }}
+
+    <!-- Display the facility name from the last iteration -->
+    <script>
+        if (typeof facilityName !== "undefined") {
+            document.getElementById("map").insertAdjacentHTML('beforebegin', '<h3>' + facilityName + '</h3>');
+        }
+    </script>
+{% endblock %}

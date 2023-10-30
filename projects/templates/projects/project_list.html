@@ -1,0 +1,79 @@
+{% extends "home/base.html" %}
+
+
+
+{% block content %}
+<style>
+    .float{
+        position:fixed;
+        bottom:40px;
+        right:40px;
+        text-align:center;
+        box-shadow: 2px 2px 3px #999;
+        z-index: 5;
+    }
+    
+    .my-float{
+        margin-top:22px;
+    }
+</style>
+<br>
+
+    <div class="container mt-2 mb-5">
+        {% if category %}
+            <h2>Your are viewing all projects in {{category}} Category</h2>
+        {% elif tag %}
+            <h2>Your are viewing all projects with {{tag}} Tag</h2>
+        {% elif search %}
+            <h2>Search results for: {{search}}</h2>
+        {% else %}
+            {% if user %}
+                <a href="{% url 'project_create' %}" class="float p-3 fs-5 rounded-pill bg-info text-decoration-none text-light">
+                    <i class="fa fa-plus"></i> Add a new project
+                </a>
+            {%endif%}
+            <h2>Explore all current projects</h2>
+        {%endif%}
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 my-2 overflow-hidden">
+        {% for project in projects %}
+        <div class="col">
+            <div class="card position-relative mx-1" style="height: 60vh;">
+                {% include "projects/partials/projectinfo.html" with project=project inlist=1 %}
+            </div>
+
+
+            
+        </div>
+
+        {% endfor %}
+        </div>
+
+        
+
+{% block Content %}
+<h1>Search Health Facilities</h1>
+
+<form method="GET" action="{% url 'search_results' %}">
+    <label for="query">Search Query:</label>
+    <input type="text" id="query" name="query">
+    <button type="submit">Search</button>
+</form>
+
+{% if results %}
+    <h2>Search Results</h2>
+    <ul>
+        {% for result in results %}
+            <li><a href="{% url 'facility_detail' result.pk %}">{{ result.facility_n }} region {{ result.admin1 }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+
+{% endblock  %}
+
+
+
+    </div>
+{% endblock %}
